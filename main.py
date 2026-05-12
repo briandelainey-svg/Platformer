@@ -48,4 +48,5 @@ class Game:
             
             self.refresh()
             self.objects()
-Game().run()
+if __name__ == '__main__':
+    Game().run()

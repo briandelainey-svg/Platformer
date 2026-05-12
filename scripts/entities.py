@@ -12,4 +12,7 @@ class PhysicsEntity:
         self.size = size
         self.vel = vel
     def update(self, move=(0, 0)):
-        frame_move = (move[0] + self.vel[0] move[1] + self.vel[1])
+        frame_move = (move[0] + self.vel[0], move[1] + self.vel[1])
+        
+if __name__ == '__main__':
+    print(' "entities" Is the Main')
