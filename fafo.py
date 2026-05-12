@@ -10,6 +10,7 @@ class Game:
         self.img.set_colorkey((0, 0, 0))
         self.img_pos = [160, 260]
         self.movey = [False, False]
+        self.movex = [False, False]
         
         
     def refresh(self):
@@ -21,8 +22,9 @@ class Game:
         
     def run(self):
         while True:
-            self.img_pos[1] += (self.movey[1] - self.movey[0]) * 5
 
+            self.img_pos[1] += (self.movey[1] - self.movey[0]) * 5
+            self.img_pos[0] += (self.movex[1] - self.movex[0]) * 5
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
@@ -34,6 +36,17 @@ class Game:
                         self.movey[0] = False
                     if event.key == pygame.K_DOWN:
                         self.movey[1] = False
+                        
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        self.movex[0] = True
+                    if event.key == pygame.K_RIGHT:
+                        self.movex[1] = True
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_LEFT:
+                        self.movex[0] = False
+                    if event.key == pygame.K_RIGHT:
+                        self.movex[1] = False
                         
                 if event.type == pygame.QUIT:
                     pygame.quit()
