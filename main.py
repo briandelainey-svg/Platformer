@@ -1,46 +1,46 @@
 import pygame, sys
+from scripts.utils import load_img
+from scripts.entities import PhysicsEntity
 
 class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((640, 480))
+        self.display = pygame.Surface((320 , 240))
         pygame.display.set_caption('Platformer')
-        self.clock = pygame.time.Clock()
-        self.img = pygame.image.load('data/images/clouds/cloud_1.png')
-        self.img.set_colorkey((0, 0, 0))
-        self.img_pos = [160, 260]
-        self.movey = [False, False]
         
-        self.collison_area = pygame.Rect(50, 50, 300, 50)
-    
-    
+        self.clock = pygame.time.Clock()
+        
+        self.movex = [False, False]
+        
+        self.player = PhysicsEntity(self, 'player', (50, 50), (8, 15))
+        self.assets = {
+            'player': load_img('entities/player.png')
+            }
+        
     def refresh(self):
         pygame.display.update()
         self.clock.tick(60)
-        self.screen.fill((14, 219, 248))
-        
+        self.display.fill((14, 219, 248))
+        self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0))
     def objects(self):
-        img_r = pygame.Rect(self.img_pos[0], self.img_pos[1], self.img.get_width(), self.img.get_height())
-        if img_r.colliderect(self.collison_area):
-            pygame.draw.rect(self.screen, (0, 100, 255), self.collison_area)
-        else:
-            pygame.draw.rect(self.screen, (0, 50, 155), self.collison_area)
-        self.img_pos[1] += (self.movey[1] - self.movey[0]) * 5
-        self.screen.blit(self.img, (self.img_pos))
-        
+        self.player.update((self.movex[1] - self.movex[0], 0))
+        self.player.render(self.display)
+    
     def run(self):
         while True:
+            
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP:
-                        self.movey[0] = True
-                    if event.key == pygame.K_DOWN:
-                        self.movey[1] = True
+                    if event.key == pygame.K_LEFT:
+                        self.movex[0] = True
+                    if event.key == pygame.K_RIGHT:
+                        self.movex[1] = True
                 if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_UP:
-                        self.movey[0] = False
-                    if event.key == pygame.K_DOWN:
-                        self.movey[1] = False
+                    if event.key == pygame.K_LEFT:
+                        self.movex[0] = False
+                    if event.key == pygame.K_RIGHT:
+                        self.movex[1] = False
                         
                 if event.type == pygame.QUIT:
                     pygame.quit()
